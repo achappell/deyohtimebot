@@ -1,59 +1,31 @@
-var Discord = require('discord.io');
-var logger = require('winston');
 var auth = require('./auth.json');
 var moment = require('moment-timezone')
-// Configure logger settings
-logger.remove(logger.transports.Console);
-logger.add(new logger.transports.Console, {
-    colorize: true
-});
-logger.level = 'debug';
-// Initialize Discord Bot
-var bot = new Discord.Client({
-   token: auth.token,
-   autorun: true
-});
-bot.on('ready', function (evt) {
-    logger.info('Connected');
-    logger.info('Logged in as: ');
-    logger.info(bot.username + ' - (' + bot.id + ')');
-    bot.setPresence( { game: 'repsonds to &deyoh',
-	    		type: 1,
-	    		url: 'http://twitch.tv' });
-});
-bot.on('message', function (user, userID, channelID, message, evt) {
-    // Our bot needs to know if it will execute a command
+const Discord = require('discord.js');
+const client = new Discord.Client();
 
+client.once('ready', () => {
+	console.log('Ready!');
+});
 
-    if (message.substring(0, 1) == '&') {
-        var args = message.substring(1).split(' ');
-        var cmd = args[0];
+client.login(auth.token);
 
-        args = args.splice(1);
-        switch(cmd) {
-            // !ping
-            case 'ping':
-                bot.sendMessage({
-                    to: channelID,
-                    message: 'Pong!'
-                });
-		break;
-	    case 'deyohtime':
-            case 'deyoh':
-		if (args == 'now') {
-			bot.sendMessage({
-				to: channelID,
-				message: moment().tz("America/Punta_Arenas").format("h:mmA")
-			});
-		} else {
-			moment.tz.setDefault("America/Chicago")
-               		bot.sendMessage({
-                  		to: channelID,
-                  		message: moment(args, "h:mmA").tz("America/Punta_Arenas").format("h:mmA")
-                	});
-		}
-            	break;
-            // Just add any case commands if you want to..
-         }
+client.on('message', message => {
+	console.log(message.content);
+  if (!message.content.includes("&") || message.author.bot) return;
+
+  const args = message.content.slice(message.content.search("&")+1).split(' ');
+  const command = args.shift().toLowerCase();
+
+  if (command === 'ping') {
+	  // send back "Pong." to the channel the message was sent in
+	  message.channel.send('Pong.');
+  }
+  else if (command === 'deyohtime' || command === 'deyoh') {
+    if (args[0] == 'now') {
+       message.channel.send(moment().tz("America/Punta_Arenas").format("h:mmA"))
+     } else {
+       var timeArg = args[0]
+       message.channel.send(moment(timeArg, "h:mmA").tz("America/Punta_Arenas").format("h:mmA"))
      }
+  }
 });
