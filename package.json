@@ -1,0 +1,12 @@
+{
+  "name": "deyoh-time",
+  "version": "1.0.0",
+  "description": "Deyoh Time",
+  "main": "bot.js",
+  "author": "Amanda Chappell",
+  "dependencies": {
+    "discord.io": "https://github.com/woor/discord.io/tarball/gateway_v6",
+    "moment-timezone": "^0.5.27",
+    "winston": "^3.2.1"
+  }
+}
