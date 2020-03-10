@@ -13,7 +13,7 @@ client.on('message', message => {
   if(message.author.bot) return;
 
   console.log(message.content);
-  
+
   var mention = false;
   if(message.mentions.users.size > 0)
   {
@@ -35,6 +35,8 @@ client.on('message', message => {
     command = 'deyoh';
   }
 
+	console.log("Args: "+args)
+
   if (command === 'ping') {
 	  // send back "Pong." to the channel the message was sent in
 	  message.channel.send('Pong.');
@@ -53,18 +55,27 @@ client.on('message', message => {
           tzFound = true;
         }
       });
-      
+
+			console.log("Zone change:"+zoneOption)
+
       if(tzFound)
       {
         timezone = zoneOption;
-      }      
+      }
     }
+
+		moment.tz.setDefault("America/Chicago")
 
     if (args[0] == 'now' || args[0] == null) {
        message.channel.send(moment().tz(timezone).format("h:mmA"))
      } else {
        var timeArg = args[0]
-       message.channel.send(moment(timeArg, "h:mmA").tz(timezone).format("h:mmA"))
+			 var deyohTime = moment(timeArg, "h:mmA").tz(timezone).format("h:mmA")
+			 if (deyohTime != "Invalid date") {
+       	 message.channel.send(moment(timeArg, "h:mmA").tz(timezone).format("h:mmA"))
+		 	 } else {
+				 message.channel.send(moment().tz(timezone).format("h:mmA"))
+			 }
      }
   }
 });
