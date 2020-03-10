@@ -21,6 +21,8 @@ client.on('message', message => {
     if(message.mentions.users.first().id == auth.id)
     {
       mention = true;
+      var mentionString = "<@!"+auth.id+">";
+      message.content = message.content.slice(message.content.search(mentionString));
     }
   }
 
@@ -43,13 +45,19 @@ client.on('message', message => {
     {
       zoneOption = args[1];
       zones = moment.tz.names();
+      var tzFound = false;
       zones.forEach(name => {
         if(name.toLowerCase().includes(zoneOption.toLowerCase()))
         {
           zoneOption = name;
+          tzFound = true;
         }
       });
-      timezone = zoneOption;
+      
+      if(tzFound)
+      {
+        timezone = zoneOption;
+      }      
     }
 
     if (args[0] == 'now' || args[0] == null) {
