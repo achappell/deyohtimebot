@@ -42,7 +42,7 @@ client.on('message', message => {
 	  message.channel.send('Pong.');
   }
   else if (command === 'deyohtime' || command === 'deyoh') {
-    var timezone = "America/Punta_Arenas";
+    var timezone = "America/Santiago";
     if(args[1] != null)
     {
       zoneOption = args[1];
