@@ -6,6 +6,6 @@
   "author": "Amanda Chappell",
   "dependencies": {
     "discord.js": "^12.0.1",
-    "moment-timezone": "^0.5.27"
+    "moment-timezone": "^0.5.35"
   }
 }
